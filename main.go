@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/go-chi/chi"
@@ -33,7 +34,12 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		log.Fatal("PORT environment variable is not set")
+		port = "8080"
+	}
+
+	portNum, err := strconv.Atoi(port)
+	if err != nil || portNum < 1 || portNum > 65535 {
+		log.Fatal("Invalid port configuration")
 	}
 
 	apiCfg := apiConfig{}
@@ -95,6 +101,6 @@ func main() {
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 
-	log.Printf("Serving on port: %s", port)
+	log.Printf("Serving on port: %d", portNum)
 	log.Fatal(srv.ListenAndServe())
 }
