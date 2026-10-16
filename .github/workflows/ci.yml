@@ -40,7 +40,7 @@ jobs:
       - name: Style
         run: test -z $(go fmt ./...)
 
-      - name: Linting:
+      - name: Linting
         run: staticcheck ./...
 
       
